@@ -1,13 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { startTransition, useActionState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 
-import { registerAction, type AuthState } from '@/app/client/auth/action'
-import { RegisterFormData, registerSchema } from '@/lib/schema/auth'
+import { registerAction } from '@/components/register/actions/register-action'
+import { registerSchema } from '@/lib/schema/auth'
 
 import { Button } from '@/components/ui/button'
 import { FieldGroup } from '@/components/ui/field'
@@ -20,50 +17,31 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { toast } from 'sonner'
-
-const initialState: AuthState = {
-  success: false,
-  message: null,
-}
+import { useFormWithServerAction } from '@/hooks/use-form-with-server-action'
+import { useToastMessage } from '@/hooks/use-toast-message'
 
 export const RegisterPageClient = () => {
   const router = useRouter()
+  const { error, success } = useToastMessage()
 
-  const [state, action, isPending] = useActionState(
-    registerAction,
-    initialState
-  )
-
-  const form = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  const { form, handleSubmit, isPending, canSubmit } = useFormWithServerAction({
+    schema: registerSchema,
+    action: registerAction,
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
+      password_confirm: '',
+    },
+    onSuccess: () => {
+      success('Register successfully')
+      router.replace('/login')
+    },
+    onError: (errors) => {
+      if (errors.root) {
+        error(errors.root)
+      }
     },
   })
-
-  function onSubmit(values: RegisterFormData) {
-    startTransition(() => {
-      action(values)
-    })
-  }
-
-  useEffect(() => {
-    if (!state) return
-
-    if (state.success) {
-      toast.success('Đăng ký thành công', {
-        description: state.message ?? 'Bạn có thể đăng nhập ngay',
-      })
-      setTimeout(() => {
-        router.push('/auth/login')
-      }, 1000)
-    } else if (state.message) {
-      toast.error(state.message)
-    }
-  }, [state, router])
 
   return (
     <Card className="w-full shadow-lg">
@@ -75,13 +53,7 @@ export const RegisterPageClient = () => {
       </CardHeader>
 
       <CardContent>
-        {state.message && !state.success && (
-          <div className="text-destructive bg-destructive/10 mb-4 rounded-md p-3 text-sm">
-            {state.message}
-          </div>
-        )}
-
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <FieldGroup>
             <ControlledInput
               control={form.control}
@@ -95,7 +67,7 @@ export const RegisterPageClient = () => {
             <ControlledInput
               control={form.control}
               name="password"
-              label="Mật khẩu"
+              label="Password"
               type="password"
               placeholder="••••••••"
               disabled={isPending}
@@ -103,16 +75,20 @@ export const RegisterPageClient = () => {
 
             <ControlledInput
               control={form.control}
-              name="confirmPassword"
-              label="Xác nhận mật khẩu"
+              name="password_confirm"
+              label="Confirm password"
               type="password"
               placeholder="••••••••"
               disabled={isPending}
             />
           </FieldGroup>
 
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? 'Đang xử lý...' : 'Đăng ký'}
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending || !canSubmit}
+          >
+            {isPending ? 'Processing...' : 'Sign Up'}
           </Button>
 
           {/* Divider */}
@@ -123,15 +99,15 @@ export const RegisterPageClient = () => {
           </div>
 
           {/* Google login */}
-          <Button variant="outline" className="w-full gap-2">
-            Đăng nhập với Google
+          <Button type="button" variant="outline" className="w-full gap-2">
+            Đăng ký với Google
           </Button>
 
           {/* Login link */}
           <p className="text-muted-foreground text-center text-sm">
             Đã có tài khoản?{' '}
             <Link
-              href="/auth/login"
+              href="/login"
               className="text-primary font-medium hover:underline"
             >
               Đăng nhập

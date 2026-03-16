@@ -1,10 +1,10 @@
-import { RegisterPageClient } from '@/app/client/auth/register/register-page-client'
+import { LoginPageClient } from '@/components/login/login-page-client'
 
-export default function Register() {
+export default function LoginPage() {
   return (
     <div className="bg-muted/40 flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <RegisterPageClient />
+        <LoginPageClient />
       </div>
     </div>
   )

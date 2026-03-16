@@ -1,12 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useActionState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 
-import { AuthFormData, authSchema } from '@/lib/schema/auth'
-import { loginAction, type AuthState } from '@/app/client/auth/action'
+import { loginSchema } from '@/lib/schema/auth'
+import { loginAction } from '@/components/login/actions/login-action'
 
 import { Button } from '@/components/ui/button'
 import { FieldGroup } from '@/components/ui/field'
@@ -19,48 +16,46 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-
-const initialState: AuthState = {
-  success: false,
-  message: null,
-}
+import { useFormWithServerAction } from '@/hooks/use-form-with-server-action'
+import { useToastMessage } from '@/hooks/use-toast-message'
+import { useRouter } from 'next/navigation'
 
 export const LoginPageClient = () => {
-  const [state, action, isPending] = useActionState(loginAction, initialState)
+  const router = useRouter()
+  const { error, success } = useToastMessage()
 
-  const form = useForm<AuthFormData>({
-    resolver: zodResolver(authSchema),
+  const { form, handleSubmit, isPending, canSubmit } = useFormWithServerAction({
+    schema: loginSchema,
+    action: loginAction,
     defaultValues: {
       email: '',
       password: '',
     },
+    onSuccess: () => {
+      success('Register successfully')
+      router.replace('/')
+    },
+    onError: (errors) => {
+      if (errors.root) {
+        error(errors.root)
+      }
+    },
   })
-
-  function onSubmit(values: AuthFormData) {
-    action(values)
-  }
 
   return (
     <Card className="w-full shadow-lg">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-bold tracking-tight">
-          Đăng nhập
+          Log In
         </CardTitle>
 
         <CardDescription>
-          Nhập email và mật khẩu để truy cập hệ thống
+          Enter email and password to access the website
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Error message */}
-        {state.message && !state.success && (
-          <div className="text-destructive bg-destructive/10 rounded-md p-3 text-sm">
-            {state.message}
-          </div>
-        )}
-
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <FieldGroup>
             <ControlledInput
               control={form.control}
@@ -74,7 +69,7 @@ export const LoginPageClient = () => {
             <ControlledInput
               control={form.control}
               name="password"
-              label="Mật khẩu"
+              label="Password"
               type="password"
               placeholder="••••••••"
               disabled={isPending}
@@ -84,7 +79,7 @@ export const LoginPageClient = () => {
           {/* forgot password */}
           <div className="flex justify-end">
             <Link
-              href="/auth/forgot-password"
+              href="/forgot-password"
               className="text-muted-foreground text-sm hover:underline"
             >
               Quên mật khẩu?
@@ -92,8 +87,12 @@ export const LoginPageClient = () => {
           </div>
 
           {/* login button */}
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? 'Đang xử lý...' : 'Đăng nhập'}
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending || !canSubmit}
+          >
+            {isPending ? 'Processing...' : 'Log In'}
           </Button>
         </form>
 
@@ -113,7 +112,7 @@ export const LoginPageClient = () => {
         <p className="text-muted-foreground text-center text-sm">
           Chưa có tài khoản?{' '}
           <Link
-            href="/auth/register"
+            href="/register"
             className="text-primary font-medium hover:underline"
           >
             Đăng ký
