@@ -7,7 +7,7 @@ type SupabaseSchema = Record<string, never>
 
 let client: SupabaseClient<SupabaseSchema> | null = null
 
-export function getSupabaseBrowserClient(): SupabaseClient<SupabaseSchema> {
+export function createClient(): SupabaseClient<SupabaseSchema> {
   if (client) {
     return client
   }

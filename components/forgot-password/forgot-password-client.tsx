@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { emailSchema } from '@/lib/schema/auth'
 import { resetPasswordForEmail } from '@/components/forgot-password/actions/forgot-password-actions'
 import { useFormWithServerAction } from '@/hooks/use-form-with-server-action'
-import { useToastMessage } from '@/hooks/use-toast-message'
+import { useToast } from '@/hooks/use-toast-notifications'
 
 import { Button } from '@/components/ui/button'
 import { FieldGroup } from '@/components/ui/field'
@@ -22,7 +22,7 @@ import { useWatch } from 'react-hook-form'
 
 export const ForgotPasswordClient = () => {
   const [success, setSuccess] = useState(false)
-  const { error } = useToastMessage()
+  const { error } = useToast()
   const { form, handleSubmit, isPending, canSubmit } = useFormWithServerAction({
     schema: emailSchema,
     action: resetPasswordForEmail,

@@ -31,8 +31,6 @@ export async function createClient() {
           )
         } catch (error) {
           console.log(error)
-          // Lỗi này thường xảy ra khi gọi từ Server Component
-          // (Nơi không cho phép set cookie, chỉ Middleware/Action mới cho phép)
         }
       },
     },

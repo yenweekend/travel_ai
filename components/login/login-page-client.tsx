@@ -17,12 +17,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { useFormWithServerAction } from '@/hooks/use-form-with-server-action'
-import { useToastMessage } from '@/hooks/use-toast-message'
+import { useToast } from '@/hooks/use-toast-notifications'
 import { useRouter } from 'next/navigation'
 
 export const LoginPageClient = () => {
   const router = useRouter()
-  const { error, success } = useToastMessage()
+  const { error, success } = useToast()
 
   const { form, handleSubmit, isPending, canSubmit } = useFormWithServerAction({
     schema: loginSchema,

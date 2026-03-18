@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { resetPasswordSchema } from '@/lib/schema/auth'
-import { useToastMessage } from '@/hooks/use-toast-message'
+import { useToast } from '@/hooks/use-toast-notifications'
 import { useFormWithServerAction } from '@/hooks/use-form-with-server-action'
 import {
   changePassword,
@@ -27,7 +27,7 @@ import { PasswordRequirements } from '@/components/forgot-password/password-requ
 
 export const ResetPasswordClient = () => {
   const [success, setSuccess] = useState(false)
-  const { error } = useToastMessage()
+  const { error } = useToast()
 
   const { form, handleSubmit, isPending } = useFormWithServerAction({
     schema: resetPasswordSchema,

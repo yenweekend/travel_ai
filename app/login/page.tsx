@@ -2,10 +2,8 @@ import { LoginPageClient } from '@/components/login/login-page-client'
 
 export default function LoginPage() {
   return (
-    <div className="bg-muted/40 flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <LoginPageClient />
-      </div>
+    <div className="w-full max-w-md">
+      <LoginPageClient />
     </div>
   )
 }
