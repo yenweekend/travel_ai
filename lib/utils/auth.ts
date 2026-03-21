@@ -9,7 +9,15 @@ export const getUserRole = async (): Promise<UserRole | null> => {
 
   if (!user) return null
 
-  return (user.user_metadata?.role as UserRole) ?? null
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (error) return null
+
+  return (data?.role as UserRole) ?? null
 }
 
 export const isSuperAdmin = async (): Promise<boolean> => {

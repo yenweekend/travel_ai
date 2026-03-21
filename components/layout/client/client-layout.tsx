@@ -4,7 +4,6 @@ import React from 'react'
 
 import { UserRole } from '@/types/auth'
 
-import { Toaster } from '@/components/ui/sonner'
 import { PermissionsProvider } from '@/components/layout/permissions-provider'
 import { Header } from '@/components/layout/client/header'
 
