@@ -18,8 +18,6 @@ export default function ClientLayout({
   initialRole?: UserRole | null
   initialUserId?: string | null
 }>) {
-  console.log(userEmail)
-
   return (
     <PermissionsProvider
       initialRole={initialRole}
