@@ -29,7 +29,6 @@ export const Header = ({ userEmail }: HeaderProps) => {
     <div className="">
       <button onClick={handletoast}>toast</button>
       {userEmail ? (
-        // ✅ ĐÃ LOGIN
         <>
           <span className="text-muted-foreground hidden text-sm sm:block">
             {userEmail}
@@ -52,7 +51,6 @@ export const Header = ({ userEmail }: HeaderProps) => {
           />
         </>
       ) : (
-        // ❌ CHƯA LOGIN
         <>
           <Button asChild variant="ghost">
             <Link href="/login">Login</Link>

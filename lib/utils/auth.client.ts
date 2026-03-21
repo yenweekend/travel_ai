@@ -9,5 +9,11 @@ export const getUserRoleClient = async (): Promise<UserRole | null> => {
 
   if (!user) return null
 
-  return (user.user_metadata?.role as UserRole) ?? null
+  const { data } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  return (data?.role as UserRole) ?? null
 }

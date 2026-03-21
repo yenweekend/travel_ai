@@ -33,8 +33,8 @@ export const RegisterPageClient = () => {
       password_confirm: '',
     },
     onSuccess: () => {
-      success('Register successfully')
-      router.replace('/login')
+      success('Registered successfully')
+      router.replace('/')
     },
     onError: (errors) => {
       if (errors.root) {

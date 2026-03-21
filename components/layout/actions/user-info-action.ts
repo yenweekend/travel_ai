@@ -28,10 +28,25 @@ export const getCurrentUserWithRole = createServerAction(
       return { email: undefined, userId: undefined, role: null }
     }
 
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (error) {
+      console.error('Error fetching profile:', error)
+      return {
+        email: user.email,
+        userId: user.id,
+        role: null,
+      }
+    }
+
     return {
       email: user.email,
       userId: user.id,
-      role: (user.user_metadata?.role as UserRole) ?? null,
+      role: data.role,
     }
   }
 )

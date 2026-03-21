@@ -31,7 +31,7 @@ export default function RootLayout({
         <div className="bg-muted/30 flex min-h-screen items-center justify-center overflow-x-hidden p-4">
           {children}
         </div>
-        <Toaster richColors position="top-right" expand />
+        <Toaster richColors={false} position="top-right" expand />
       </body>
     </html>
   )

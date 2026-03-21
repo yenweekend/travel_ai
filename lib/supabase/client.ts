@@ -1,13 +1,12 @@
 'use client'
 
+import { Database } from '@/types/database'
 import { createBrowserClient } from '@supabase/ssr'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
-type SupabaseSchema = Record<string, never>
+let client: SupabaseClient<Database> | null = null
 
-let client: SupabaseClient<SupabaseSchema> | null = null
-
-export function createClient(): SupabaseClient<SupabaseSchema> {
+export function createClient(): SupabaseClient<Database> {
   if (client) {
     return client
   }
@@ -21,6 +20,6 @@ export function createClient(): SupabaseClient<SupabaseSchema> {
     )
   }
 
-  client = createBrowserClient<SupabaseSchema>(supabaseUrl, supabaseAnonKey)
+  client = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey)
   return client
 }
