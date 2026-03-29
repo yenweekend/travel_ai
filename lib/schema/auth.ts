@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ValidationMessages } from '../utils/validation'
+import { ValidationMessages } from '@/lib/utils/validation'
 
 export const emailSchema = z.object({
   email: z

@@ -5,7 +5,6 @@ import React from 'react'
 import { UserRole } from '@/types/auth'
 
 import { PermissionsProvider } from '@/components/layout/permissions-provider'
-import { Header } from '@/components/layout/client/header'
 
 export default function ClientLayout({
   children,
@@ -23,7 +22,6 @@ export default function ClientLayout({
       initialRole={initialRole}
       initialUserId={initialUserId}
     >
-      <Header userEmail={userEmail} />
       {children}
     </PermissionsProvider>
   )

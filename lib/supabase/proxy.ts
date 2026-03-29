@@ -47,7 +47,10 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthPage = AUTH_PATHS.some((path) => pathname.startsWith(path))
 
-  const isPublicPage = pathname === '/' || pathname.startsWith('/tours')
+  const isPublicPage =
+    pathname === '/' ||
+    pathname.startsWith('/tours') ||
+    pathname.startsWith('/destinations')
 
   const isAdminPage = pathname.startsWith('/admin')
 
