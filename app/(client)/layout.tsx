@@ -1,5 +1,7 @@
 import { getCurrentUserWithRole } from '@/components/layout/actions/user-info-action'
 import ClientLayout from '@/components/layout/client/client-layout'
+import Footer from '@/components/layout/client/footer'
+import Header from '@/components/layout/client/header'
 
 export default async function MainLayout({
   children,
@@ -16,7 +18,9 @@ export default async function MainLayout({
       initialRole={initialRole}
       initialUserId={initialUserId}
     >
-      {children}
+      <Header />
+      <div className="mt-20">{children}</div>
+      <Footer />
     </ClientLayout>
   )
 }

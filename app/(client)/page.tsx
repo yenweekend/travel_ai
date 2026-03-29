@@ -1,11 +1,20 @@
+import { getDestinations } from '@/components/destination/actions/destination-actions'
 import { HomePageClient } from '@/components/home/home-page-client'
+import { getHotels } from '@/components/hotel/actions/hotel-actions'
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
-        <HomePageClient />
-      </main>
-    </div>
-  )
+export default async function Home() {
+  const [destinationResult, hotelResult] = await Promise.all([
+    getDestinations({ featured: true, limit: 4 }),
+    getHotels({ featured: true, limit: 3 }),
+  ])
+
+  const destinations =
+    destinationResult.success && destinationResult.data
+      ? destinationResult.data.destinations
+      : []
+
+  const hotels =
+    hotelResult.success && hotelResult.data ? hotelResult.data.destinations : []
+
+  return <HomePageClient destinations={destinations} hotels={hotels} />
 }
