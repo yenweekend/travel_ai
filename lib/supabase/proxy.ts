@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { AUTH_PATHS } from '@/lib/constants/common'
+import { AUTH_PATHS, PUBLIC_PATHS } from '@/lib/constants/common'
 
 const copyCookiesToResponse = (
   source: NextResponse,
@@ -47,10 +47,9 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthPage = AUTH_PATHS.some((path) => pathname.startsWith(path))
 
-  const isPublicPage =
-    pathname === '/' ||
-    pathname.startsWith('/tours') ||
-    pathname.startsWith('/destinations')
+  const isPublicPage = PUBLIC_PATHS.some((path) =>
+    path === '/' ? pathname === path : pathname.startsWith(path)
+  )
 
   const isAdminPage = pathname.startsWith('/admin')
 

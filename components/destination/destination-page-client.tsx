@@ -11,7 +11,6 @@ import Link from 'next/link'
 import { formatPrice } from '@/lib/utils/common'
 import { SearchInput } from '../common/search-input'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
 
 interface DestinationProps {
   destinations: Destination[]
@@ -20,9 +19,10 @@ interface DestinationProps {
 export const DestinationPageClient = ({ destinations }: DestinationProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [selectedType, setSelectedType] = useState<string>('')
 
   const keyword = searchParams.get('keyword') || ''
+
+  const selectedType = searchParams.get('type') || 'all'
 
   const handleSearchChange = (value: string) => {
     const params = new URLSearchParams(searchParams)
@@ -30,6 +30,16 @@ export const DestinationPageClient = ({ destinations }: DestinationProps) => {
       params.set('keyword', value)
     } else {
       params.delete('keyword')
+    }
+    router.push(`?${params.toString()}`)
+  }
+
+  const handleSelectType = (value: string) => {
+    const params = new URLSearchParams(searchParams)
+    if (value) {
+      params.set('type', value)
+    } else {
+      params.delete('type')
     }
     router.push(`?${params.toString()}`)
   }
@@ -66,7 +76,7 @@ export const DestinationPageClient = ({ destinations }: DestinationProps) => {
           <Badge
             variant={selectedType === '' ? 'default' : 'outline'}
             className="cursor-pointer"
-            onClick={() => setSelectedType('')}
+            onClick={() => handleSelectType('')}
           >
             Tất cả
           </Badge>
@@ -75,7 +85,7 @@ export const DestinationPageClient = ({ destinations }: DestinationProps) => {
               key={type.value}
               variant={selectedType === type.value ? 'default' : 'outline'}
               className="cursor-pointer"
-              onClick={() => setSelectedType(type.value)}
+              onClick={() => handleSelectType(type.value)}
             >
               {type.icon} {type.label}
             </Badge>

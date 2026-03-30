@@ -2,6 +2,7 @@
 
 import { createServerAction } from '@/lib/utils/server-actions'
 import { createClient } from '@/lib/supabase/server'
+import { Destination, DestinationTagCustom } from '@/types/destination'
 
 export const getDestinations = createServerAction(
   async (params?: {
@@ -47,5 +48,51 @@ export const getDestinations = createServerAction(
     if (error) throw new Error(error.message)
 
     return { destinations: data || [], count: count || 0 }
+  }
+)
+
+export const getDestinationBySlug = createServerAction(
+  async (slug?: Destination['slug']) => {
+    const supabase = await createClient()
+
+    const { data: destination, error: destError } = await supabase
+      .from('destinations')
+      .select(
+        `*, 
+       destination_images(id, image_url, caption, sort_order),
+       attractions(id, name, description, image_url, entry_fee, sort_order),
+       destination_tags(tags(id, name, slug))`
+      )
+      .eq('slug', slug)
+      .single()
+
+    if (destError) throw new Error(destError.message)
+    if (!destination) return null
+
+    const { data: reviews, error: reviewError } = await supabase
+      .from('reviews')
+      .select(
+        `id, 
+       rating, 
+       comment, 
+       created_at,
+       profiles:user_id(full_name, avatar_url)`
+      )
+      .eq('target_id', destination.id)
+      .eq('target_type', 'destination')
+      .eq('is_visible', true)
+      .order('created_at', { ascending: false })
+
+    console.log('data', reviews)
+
+    if (reviewError) throw new Error(reviewError.message)
+
+    return {
+      ...destination,
+      tags: (destination.destination_tags || [])
+        .map((item: DestinationTagCustom) => item.tags)
+        .flat(),
+      reviews: reviews || [],
+    }
   }
 )

@@ -1,12 +1,12 @@
 export const ValidationMessages = {
-  require: (field: string) => `Please enter ${field}`,
+  require: (field: string) => `Vui lòng nhập ${field}`,
   maxLength: (field: string, maxLength: number) =>
-    `${field} must not exceed ${maxLength} characters`,
+    `${field} không được vượt quá ${maxLength} ký tự`,
   minLength: (field: string, minLength: number) =>
-    `${field} must be at least ${minLength} characters`,
+    `${field} phải có ít nhất ${minLength} ký tự`,
   numberMinLength: (field: string, minLength: number) =>
-    `${field} must be greater than or equal to ${minLength}`,
+    `${field} phải lớn hơn hoặc bằng ${minLength}`,
   numberMaxLength: (field: string, maxLength: number) =>
-    `${field} must be less than or equal to ${maxLength}`,
-  email: 'Please enter a valid email address.',
+    `${field} phải nhỏ hơn hoặc bằng ${maxLength}`,
+  email: 'Vui lòng nhập địa chỉ email hợp lệ.',
 }

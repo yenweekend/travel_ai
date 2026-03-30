@@ -14,7 +14,7 @@ export default async function Home() {
       : []
 
   const hotels =
-    hotelResult.success && hotelResult.data ? hotelResult.data.destinations : []
+    hotelResult.success && hotelResult.data ? hotelResult.data.hotels : []
 
   return <HomePageClient destinations={destinations} hotels={hotels} />
 }

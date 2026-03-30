@@ -2,6 +2,7 @@
 
 import { createServerAction } from '@/lib/utils/server-actions'
 import { createClient } from '@/lib/supabase/server'
+import { Hotel, HotelAmenity } from '@/types/hotel'
 
 export const getHotels = createServerAction(
   async (params?: {
@@ -46,6 +47,50 @@ export const getHotels = createServerAction(
     const { data, error, count } = await query
     if (error) throw new Error(error.message)
 
-    return { destinations: data || [], count: count || 0 }
+    return { hotels: data || [], count: count || 0 }
+  }
+)
+
+export const getHotelBySlug = createServerAction(
+  async (slug?: Hotel['slug']) => {
+    const supabase = await createClient()
+
+    const { data: hotel, error: destError } = await supabase
+      .from('hotels')
+      .select(
+        `*, 
+       hotel_images(id, image_url, caption, sort_order),
+       room_types(*),
+       hotel_amenities(amenities(id, name, icon))`
+      )
+      .eq('slug', slug)
+      .single()
+
+    if (destError) throw new Error(destError.message)
+    if (!hotel) return null
+
+    const { data: reviews, error: reviewError } = await supabase
+      .from('reviews')
+      .select(
+        `id, 
+       rating, 
+       comment, 
+       created_at,
+       profiles:user_id(full_name, avatar_url)`
+      )
+      .eq('target_id', hotel.id)
+      .eq('target_type', 'hotel')
+      .eq('is_visible', true)
+      .order('created_at', { ascending: false })
+
+    if (reviewError) throw new Error(reviewError.message)
+
+    return {
+      ...hotel,
+      amenities: (hotel.hotel_amenities || [])
+        .map((item: { amenities: HotelAmenity }) => item.amenities)
+        .flat(),
+      reviews: reviews || [],
+    }
   }
 )

@@ -7,10 +7,13 @@ export type FieldType = 'text' | 'password' | 'email'
 interface ControlledInputProps<T extends FieldValues> {
   control: Control<T>
   name: Path<T>
-  label: string
+  label?: string
   placeholder?: string
   type?: FieldType
   disabled?: boolean
+  prefix?: React.ReactNode
+  suffix?: React.ReactNode
+  inputClassName?: string
 }
 
 export const ControlledInput = <T extends FieldValues>({
@@ -20,6 +23,9 @@ export const ControlledInput = <T extends FieldValues>({
   placeholder,
   type = 'text',
   disabled,
+  prefix,
+  suffix,
+  inputClassName,
 }: ControlledInputProps<T>) => {
   return (
     <Controller
@@ -27,15 +33,20 @@ export const ControlledInput = <T extends FieldValues>({
       name={name}
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={name}>{label}</FieldLabel>
-          <Input
-            {...field}
-            id={name}
-            type={type}
-            placeholder={placeholder}
-            disabled={disabled}
-            aria-invalid={fieldState.invalid}
-          />
+          {label && <FieldLabel htmlFor={name}>{label}</FieldLabel>}
+          <div className="relative">
+            {prefix}
+            <Input
+              {...field}
+              id={name}
+              type={type}
+              placeholder={placeholder}
+              disabled={disabled}
+              aria-invalid={fieldState.invalid}
+              className={inputClassName}
+            />
+            {suffix}
+          </div>
           {fieldState.error && (
             <FieldError>{fieldState.error.message}</FieldError>
           )}

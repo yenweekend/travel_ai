@@ -12,6 +12,11 @@ export const registerAction = createValidatedAction<
   const { error } = await supabase.auth.signUp({
     email: validatedData.email,
     password: validatedData.password,
+    options: {
+      data: {
+        full_name: validatedData.full_name,
+      },
+    },
   })
 
   if (error) {
