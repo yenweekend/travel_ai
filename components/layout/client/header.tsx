@@ -154,22 +154,19 @@ export default function Header() {
                     </p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push('/dashboard')}>
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => router.push('/dashboard/wishlists')}
-                  >
-                    <Heart className="mr-2 h-4 w-4" />
-                    Yêu thích
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => router.push('/dashboard/profile')}
-                  >
+                  <DropdownMenuItem onClick={() => router.push('/profile')}>
                     <User className="mr-2 h-4 w-4" />
                     Hồ sơ
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => router.push('/my-tours')}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Tour đã đặt
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => router.push('/itineraries')}>
+                    <Heart className="mr-2 h-4 w-4" />
+                    Lịch trình AI
+                  </DropdownMenuItem>
+
                   {user.role === 'admin' && (
                     <>
                       <DropdownMenuSeparator />

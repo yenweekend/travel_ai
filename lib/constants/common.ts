@@ -70,9 +70,7 @@ export const ADMIN_NAV_ITEMS = [
 ] as const
 
 export const DASHBOARD_NAV_ITEMS = [
-  { href: '/dashboard', label: 'Tổng quan', icon: 'LayoutDashboard' },
-  { href: '/dashboard/profile', label: 'Hồ sơ', icon: 'User' },
-  { href: '/dashboard/wishlists', label: 'Yêu thích', icon: 'Heart' },
-  { href: '/dashboard/itineraries', label: 'Lịch trình AI', icon: 'Map' },
-  { href: '/dashboard/reviews', label: 'Reviews', icon: 'Star' },
+  { href: '/profile', label: 'Tổng quan', icon: 'User' },
+  { href: '/itineraries', label: 'Lịch trình AI', icon: 'Map' },
+  { href: '/my-tours', label: 'Các tours đã đặt', icon: 'Map' },
 ] as const

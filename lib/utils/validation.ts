@@ -9,4 +9,5 @@ export const ValidationMessages = {
   numberMaxLength: (field: string, maxLength: number) =>
     `${field} phải nhỏ hơn hoặc bằng ${maxLength}`,
   email: 'Vui lòng nhập địa chỉ email hợp lệ.',
+  phone: 'Số điện thoại không hợp lệ',
 }
