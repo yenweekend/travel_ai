@@ -5,7 +5,7 @@ export const AUTH_PATHS = [
   '/link-expired',
 ]
 
-export const PUBLIC_PATHS = ['/', '/tours', '/destinations', '/hotels']
+export const PUBLIC_PATHS = ['/', '/tours', '/destinations', '/hotels', '/ai-planner']
 
 export const APP_NAME = 'VietTravel'
 export const APP_DESCRIPTION = 'Khám phá Việt Nam - Nền tảng du lịch thông minh'
@@ -65,12 +65,13 @@ export const ADMIN_NAV_ITEMS = [
   { href: '/admin/tours', label: 'Tour', icon: 'Route' },
   { href: '/admin/tags', label: 'Tags', icon: 'Tags' },
   { href: '/admin/users', label: 'Users', icon: 'Users' },
+  { href: '/admin/bookings', label: 'Bookings', icon: 'Receipt' },
   { href: '/admin/reviews', label: 'Reviews', icon: 'MessageSquare' },
   { href: '/admin/ai-logs', label: 'AI Logs', icon: 'Bot' },
 ] as const
 
 export const DASHBOARD_NAV_ITEMS = [
   { href: '/profile', label: 'Tổng quan', icon: 'User' },
-  { href: '/itineraries', label: 'Lịch trình AI', icon: 'Map' },
+  { href: '/itineraries', label: 'Lịch trình AI', icon: 'Sparkles' },
   { href: '/my-tours', label: 'Các tours đã đặt', icon: 'Map' },
 ] as const

@@ -8,6 +8,7 @@ import {
   Heart,
   Map,
   Star,
+  Sparkles,
   ChevronLeft,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -19,6 +20,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Heart,
   Map,
   Star,
+  Sparkles,
 }
 
 export const FeatureSideBar = () => {
@@ -54,7 +56,7 @@ export const FeatureSideBar = () => {
         })}
       </nav>
 
-      <div className="border-border border-t p-4">
+      {/* <div className="border-border border-t p-4">
         <Link
           href="/"
           className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm transition-colors"
@@ -62,7 +64,7 @@ export const FeatureSideBar = () => {
           <ChevronLeft className="h-4 w-4" />
           Về trang chủ
         </Link>
-      </div>
+      </div> */}
     </aside>
   )
 }
